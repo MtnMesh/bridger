@@ -1,0 +1,66 @@
+name: bridgestack
+services:
+  influxdb:
+    container_name: bridger-influxdb
+    image: docker.io/library/influxdb:2-alpine
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
+      - ./influxdb/model_task.sh:/docker-entrypoint-initdb.d/model_task.sh
+    ports:
+      - 8086:8086
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=test1234pass
+      - DOCKER_INFLUXDB_INIT_ORG=MtnMesh
+      - DOCKER_INFLUXDB_INIT_BUCKET=meshtastic
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=test1234token
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail http://127.0.0.1:8086/ready || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  bridger:
+    container_name: bridger
+    build: ../../.
+    restart: unless-stopped
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    environment:
+      - MQTT_TOPIC=mtnme.sh/#
+      - MQTT_BROKER=10.0.20.222
+      - MQTT_USER=mesh
+      - MQTT_PASS=mesh1234
+      - INFLUXDB_V2_BUCKET=meshtastic
+      - INFLUXDB_V2_ORG=MtnMesh
+      - INFLUXDB_V2_TOKEN=test1234token
+      - INFLUXDB_V2_URL=http://influxdb:8086
+
+  grafana:
+    container_name: bridger-grafana
+    image: grafana/grafana
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning/influxdb-datasource.yml:/etc/grafana/provisioning/datasources/influxdb-datasource.yml:Z
+      - ./grafana/provisioning/dashboard.yml:/etc/grafana/provisioning/dashboards/main.yml:Z
+      - ../grafana/dashboards:/var/lib/grafana/dashboards:Z
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=test1234pass
+      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource, grafana-github-datasource, grafana-googlesheets-datasource
+
+volumes:
+  influxdb-data:
+  influxdb-config:
+  grafana-data:

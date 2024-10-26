@@ -40,7 +40,7 @@
           },
           "name": "Bridger Releases",
           "target": {
-            "owner": "austinmesh",
+            "owner": "mtnmesh",
             "queryType": "Releases",
             "refId": "Anno",
             "repository": "bridger"
@@ -59,7 +59,7 @@
         "includeVars": false,
         "keepTime": false,
         "tags": [
-          "austinmesh"
+          "mtnmesh"
         ],
         "targetBlank": false,
         "title": "Related Dashboards",
@@ -602,11 +602,11 @@
           "view": {
             "allLayers": true,
             "id": "coords",
-            "lat": 30.304495,
-            "lon": -97.762864,
+            "lat": 34.78,
+            "lon": -84.13,
             "padding": 10,
             "shared": false,
-            "zoom": 9.78
+            "zoom": 7.9
           }
         },
         "pluginVersion": "11.2.0",
@@ -707,11 +707,11 @@
             "allLayers": true,
             "id": "coords",
             "lastOnly": false,
-            "lat": 30.304495,
+            "lat": 34.78,
             "layer": "Nodes",
-            "lon": -97.762864,
+            "lon": -84.13,
             "padding": 10,
-            "zoom": 9.78
+            "zoom": 7.9
           }
         },
         "pluginVersion": "11.2.0",
@@ -1769,7 +1769,7 @@
     "refresh": "30m",
     "schemaVersion": 39,
     "tags": [
-      "austinmesh",
+      "mtnmesh",
       "global"
     ],
     "templating": {
@@ -2233,7 +2233,7 @@
       ]
     },
     "timezone": "browser",
-    "title": "Austin Mesh",
+    "title": "MtnMesh",
     "uid": "ddpwwgtdxf2m8f",
     "version": 79,
     "weekStart": ""

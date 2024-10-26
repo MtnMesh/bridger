@@ -1,0 +1,15 @@
+apiVersion: 1
+datasources:
+  - name: meshstats
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    isDefault: true
+    database: meshtastic
+    uid: adpwvhf6t1wjkd
+    jsonData:
+      version: Flux
+      organization: MtnMesh
+      defaultBucket: meshtastic
+    secureJsonData:
+      token: test1234token
